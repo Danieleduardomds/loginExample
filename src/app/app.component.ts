@@ -1,10 +1,66 @@
-import { Component } from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  DoCheck, 
+  OnInit,
+} from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: `
+    <app-login  [title]="title" *ngIf="!destruir"></app-login>
+    {{ valor }}
+    <button (click)="adicionar()">Adicionar</button>
+    <button (click)="destuirComponent()">Destruir Componente</button>
+    <router-outlet *ngIf="!destruir"></router-outlet>
+  `,
 })
-export class AppComponent {
-  title = 'example-login';
+export class AppComponent
+  implements
+    OnInit,
+    DoCheck,
+    AfterContentInit,
+    AfterContentChecked,
+    AfterViewInit,
+    AfterViewChecked
+
+{
+  public title: string = `Login Example`
+  public valor: number = 1;
+  public destruir: boolean = false;
+
+  constructor() {
+    console.log(`Constructor`);
+  }
+
+  public adicionar(): number {
+    return (this.valor += 1);
+  }
+
+  public destuirComponent() {
+    this.destruir = true;
+  }
+
+  ngOnInit(): void {
+    console.log(`Start Component`);
+  }
+  ngDoCheck(): void {
+    console.log(`ngDoCheck`);
+  }
+  ngAfterContentInit(): void {
+    console.log(`ngAfterContentInit`);
+  }
+  ngAfterContentChecked(): void {
+    console.log(`ngAfterContentChecked`);
+  }
+  ngAfterViewInit(): void {
+    console.log(`ngAfterViewInit`);
+  }
+  ngAfterViewChecked(): void {
+    console.log(`ngAfterViewChecked`);
+  }
+
 }
