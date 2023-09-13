@@ -4,18 +4,15 @@ import {
   AfterViewChecked,
   AfterViewInit,
   Component,
-  DoCheck, 
+  DoCheck,
   OnInit,
 } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   template: `
-    <app-login  [title]="title" *ngIf="!destruir"></app-login>
-    {{ valor }}
-    <button (click)="adicionar()">Adicionar</button>
-    <button (click)="destuirComponent()">Destruir Componente</button>
-    <router-outlet *ngIf="!destruir"></router-outlet>
+    <app-login></app-login>
+    <router-outlet></router-outlet>
   `,
 })
 export class AppComponent
@@ -26,14 +23,13 @@ export class AppComponent
     AfterContentChecked,
     AfterViewInit,
     AfterViewChecked
-
 {
-  public title: string = `Login Example`
+  public title: string = `Login Example`;
   public valor: number = 1;
   public destruir: boolean = false;
 
   constructor() {
-    console.log(`Constructor`);
+    //console.log(`Constructor`);
   }
 
   public adicionar(): number {
@@ -45,22 +41,21 @@ export class AppComponent
   }
 
   ngOnInit(): void {
-    console.log(`Start Component`);
+    //console.log(`Start Component`);
   }
   ngDoCheck(): void {
-    console.log(`ngDoCheck`);
+    // console.log(`ngDoCheck`);
   }
   ngAfterContentInit(): void {
-    console.log(`ngAfterContentInit`);
+    // console.log(`ngAfterContentInit`);
   }
   ngAfterContentChecked(): void {
-    console.log(`ngAfterContentChecked`);
+    //console.log(`ngAfterContentChecked`);
   }
   ngAfterViewInit(): void {
-    console.log(`ngAfterViewInit`);
+    // console.log(`ngAfterViewInit`);
   }
   ngAfterViewChecked(): void {
-    console.log(`ngAfterViewChecked`);
+    // console.log(`ngAfterViewChecked`);
   }
-
 }
