@@ -1,2 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
+
+.is-invalid {
+    background-color: ivory;
+    border: none;
+    outline: 2px solid red;
+    border-radius: 5px;   
+  }
+  //Sobreescrever CSS
+:host .was-validated .form-control:invalid, .form-control.is-invalid {
+    background-image: none; 
+    
+}
+  
