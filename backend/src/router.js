@@ -4,6 +4,6 @@ const { getAll } = require('./models/usersModel');
 
 const router = express.Router();
 
-router.get('/tasks',usersController.getAll);
+router.get('/users',usersController.getAll);
 
 module.exports = router;
