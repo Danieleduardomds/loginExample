@@ -6,6 +6,6 @@ const loginMiddleware = require('./middlewares/loginMiddleware');
 const router = express.Router();
 
 router.get('/users',usersController.getAll);
-router.get('/login',loginMiddleware.validateDataLogin, usersController.validationUser);
+router.post('/login',loginMiddleware.validateDataLogin, usersController.validationUser);
 
 module.exports = router;

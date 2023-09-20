@@ -9,9 +9,9 @@ const validationUser = async (request, response) => {
     const login = request.body.login;
     const [user] = await usersModel.validationUser(login); 
     if(user){
-        return response.status(200).json({massage:'a543'});
+        return response.status(200).json({code:'a543'});
     }else{
-        return response.status(200).json({massage:'b324'});
+        return response.status(200).json({code:'b324'});
     }  
 };
 

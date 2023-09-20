@@ -24,6 +24,8 @@ import {
   faXTwitter,
 } from '@fortawesome/free-brands-svg-icons';
 import { RX_EMAIL, RX_PASSWORD } from '../shared/utils/regex';
+import { LoginService } from '../shared/service/login.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -47,16 +49,23 @@ export class LoginComponent
   invalidEmail = false;
   invalidPassword = false;
 
+  url: string = '';
+
   formConfirmLogin = new FormGroup({
     email: new FormControl(''),
     password: new FormControl(''),
   });
 
-
   // Decorator
   @Input() public title: any;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    protected serviceLogin: LoginService,
+    private http: HttpClient
+  ) {
+    this.url = 'http://localhost:3333/users';
+  }
 
   ngOnInit(): void {
     console.log('sistema Inicializado');
@@ -67,6 +76,19 @@ export class LoginComponent
     console.log('Alterado o valor do Propery-binging');
   }
 
+  validateLogin() {
+    // this.serviceLogin
+    //   .validateLogin("daniel")
+    //   .subscribe((resultado) => resultado.find((item: any) => {
+    //     item.code
+    //     console.log(item.code);
+        
+    //   }));
+      this.serviceLogin
+      .validateLogin("daniel")
+      .subscribe((resultado) => (console.log(resultado)));
+  }
+
   public createForm(): void {
     this.formConfirmLogin = this.formBuilder.group({
       email: ['', [Validators.required, Validators.pattern(RX_EMAIL)]],
@@ -75,32 +97,30 @@ export class LoginComponent
         [
           Validators.required,
           Validators.minLength(6),
-          Validators.maxLength(40)
-         
+          Validators.maxLength(40),
         ],
       ],
     });
   }
- private checkForm(): void {
+  private checkForm(): void {
+    const { email, password } = this.formConfirmLogin.controls;
 
-  const {email,password} =this.formConfirmLogin.controls;
+    if (email.invalid) {      
+      this.invalidEmail = true;
+      this.validateLogin();
+    } else {
+      this.invalidEmail = false;
+    }
 
-   if(email.invalid){
-    this.invalidEmail = true;
-   }else{
-    this.invalidEmail = false;
-   }
+    if (password.invalid) {
+      this.invalidPassword = true;
+    } else {
+      this.invalidPassword = false;
+    }
+  }
 
-   if(password.invalid){
-    this.invalidPassword = true;
-   }else{
-    this.invalidPassword = false;
-   }
-
- }
-
-  public onSubmit() {
-    this.checkForm();  
+  public onSubmit() {  
+    this.checkForm();
     console.log(this.formConfirmLogin.controls.email.value);
     console.log(this.email);
   }
@@ -122,11 +142,10 @@ export class LoginComponent
     this.formConfirmLogin.controls.email.setValue(value);
   }
 
-//Pegar o valor salvo digitado 
+  //Pegar o valor salvo digitado
   get email() {
     return this.formConfirmLogin.controls.email.value;
   }
-
 
   public login() {
     // alert('ola ' + this.email + ' tudo bem?');
