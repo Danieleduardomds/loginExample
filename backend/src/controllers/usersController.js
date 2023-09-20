@@ -7,7 +7,8 @@ const getAll = async (request, response) => {
 
 const validationUser = async (request, response) => {
     const login = request.body.login;
-    const [user] = await usersModel.validationUser(login); 
+    const password = request.body.password;
+    const [user] = await usersModel.validationUser(login,password); 
     if(user){
         return response.status(200).json({code:'a543'});
     }else{

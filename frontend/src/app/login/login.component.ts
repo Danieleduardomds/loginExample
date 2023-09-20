@@ -32,26 +32,19 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent
-  implements
-    OnInit,
-    DoCheck,
-    AfterContentInit,
-    AfterContentChecked,
-    AfterViewInit,
-    AfterViewChecked
-{
-  faFacebookF = faFacebookF;
-  faXTwitter = faXTwitter;
-  faLinkedin = faLinkedin;
-  faGoogle = faGoogle;
-  submitted = false;
-  invalidEmail = false;
-  invalidPassword = false;
+export class LoginComponent implements OnInit {
+  public faFacebookF = faFacebookF;
+  public faXTwitter = faXTwitter;
+  public faLinkedin = faLinkedin;
+  public faGoogle = faGoogle;
+  public submitted = false;
+  public invalidEmail = false;
+  public invalidPassword = false;
+  public code: any;
+  public email: string | null = '';
+  public password: string | null = '';
 
-  url: string = '';
-
-  formConfirmLogin = new FormGroup({
+  public formConfirmLogin = new FormGroup({
     email: new FormControl(''),
     password: new FormControl(''),
   });
@@ -61,32 +54,23 @@ export class LoginComponent
 
   constructor(
     private formBuilder: FormBuilder,
-    protected serviceLogin: LoginService,
-    private http: HttpClient
-  ) {
-    this.url = 'http://localhost:3333/users';
-  }
+    protected serviceLogin: LoginService   
+  ) {}
 
   ngOnInit(): void {
-    console.log('sistema Inicializado');
     this.createForm();
   }
 
-  ngOnChanges(): void {
-    console.log('Alterado o valor do Propery-binging');
-  }
-
   validateLogin() {
-    // this.serviceLogin
-    //   .validateLogin("daniel")
-    //   .subscribe((resultado) => resultado.find((item: any) => {
-    //     item.code
-    //     console.log(item.code);
-        
-    //   }));
-      this.serviceLogin
-      .validateLogin("daniel")
-      .subscribe((resultado) => (console.log(resultado)));
+    this.serviceLogin.validateLogin(this.email, this.password).subscribe({
+      next: (data) => {
+        this.code = data.code;
+        this.checkForm();
+      },
+      error: (error) => {
+        console.error('Error when fetching data:', error);
+      },
+    });
   }
 
   public createForm(): void {
@@ -96,7 +80,7 @@ export class LoginComponent
         '',
         [
           Validators.required,
-          Validators.minLength(6),
+          Validators.minLength(2),
           Validators.maxLength(40),
         ],
       ],
@@ -104,25 +88,30 @@ export class LoginComponent
   }
   private checkForm(): void {
     const { email, password } = this.formConfirmLogin.controls;
-
-    if (email.invalid) {      
+    if (email.invalid) {
       this.invalidEmail = true;
-      this.validateLogin();
     } else {
       this.invalidEmail = false;
     }
-
     if (password.invalid) {
       this.invalidPassword = true;
     } else {
       this.invalidPassword = false;
     }
+
+    if (!this.invalidEmail && !this.invalidPassword) {
+      this.login();
+    }
   }
 
-  public onSubmit() {  
-    this.checkForm();
-    console.log(this.formConfirmLogin.controls.email.value);
-    console.log(this.email);
+  public onSubmit() {
+    this.email = this.formConfirmLogin.controls.email.value;
+    this.password = this.formConfirmLogin.controls.password.value;
+    if (!this.email || !this.password) {
+      alert('Enter email and password');
+    } else {
+      this.validateLogin();
+    }
   }
 
   public reset() {
@@ -132,45 +121,12 @@ export class LoginComponent
     this.formConfirmLogin.controls.password.setValue('');
   }
 
-  // Pega o que foi digitado no  formulario
-  get getValueForm() {
-    return this.formConfirmLogin.controls;
-  }
-
-  // salvar Valor que foi digitado
-  set email(value: any) {
-    this.formConfirmLogin.controls.email.setValue(value);
-  }
-
-  //Pegar o valor salvo digitado
-  get email() {
-    return this.formConfirmLogin.controls.email.value;
-  }
-
   public login() {
-    // alert('ola ' + this.email + ' tudo bem?');
-    // console.log(this.email);
+    if (this.code === 'b324') {
+      this.invalidEmail = true;
+      this.invalidPassword = true;
+    } else {
+      alert('existe');
+    }
   }
-
-  ngDoCheck(): void {
-    //console.log(`ngDoCheck`);
-  }
-
-  ngAfterContentInit(): void {
-    // console.log(`ngAfterContentInit`);
-  }
-  ngAfterContentChecked(): void {
-    //console.log(`ngAfterContentChecked`);
-  }
-  ngAfterViewInit(): void {
-    console.log('Chamada realizada depois da  visualizacao da inicializacao');
-  }
-
-  ngAfterViewChecked(): void {
-    //console.log(`ngAfterViewChecked`);
-  }
-
-  // ngOnDestroy(): void {
-  //   alert(`Destruido o Componente com SUCESSO!`);
-  // }
 }

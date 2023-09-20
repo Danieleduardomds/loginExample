@@ -6,10 +6,11 @@ const getAll = async () => {
     return users;
 };
 
-const validationUser = async (login) => {
+const validationUser = async (login,password) => {
     const validationLogin = login; 
-    const query = 'SELECT * FROM users WHERE login = ?';    
-    const [user] = await connection.execute(query,[validationLogin]);
+    const validationPassword = password;
+    const query = 'SELECT * FROM users WHERE login = ? AND password = ?';    
+    const [user] = await connection.execute(query,[validationLogin,validationPassword]);
     return user;
 };
 
