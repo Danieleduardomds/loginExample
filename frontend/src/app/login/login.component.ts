@@ -26,6 +26,7 @@ import {
 import { RX_EMAIL, RX_PASSWORD } from '../shared/utils/regex';
 import { LoginService } from '../shared/service/login.service';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -54,7 +55,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    protected serviceLogin: LoginService   
+    private router: Router,
+    protected serviceLogin: LoginService
   ) {}
 
   ngOnInit(): void {
@@ -125,8 +127,8 @@ export class LoginComponent implements OnInit {
     if (this.code === 'b324') {
       this.invalidEmail = true;
       this.invalidPassword = true;
-    } else {
-      alert('existe');
+    } else {      
+      this.router.navigateByUrl('/userList');
     }
   }
 }
