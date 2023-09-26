@@ -15,4 +15,9 @@ export class LoginService {
     // const headers = {  'Content-Type': 'application/json' }; 
     return this.http.post<any>(this.url + '/login', body);
   }
+
+  LoadDataUsers(): Observable<any> {  
+    // const headers = {  'Content-Type': 'application/json' }; 
+    return this.http.get<any>(this.url + '/users');
+  }
 }

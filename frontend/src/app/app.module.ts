@@ -8,10 +8,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { UserListComponent } from './user-list/user-list.component';
+import { UserListModule } from './user-list/user-list.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, UserListComponent],
+  declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -19,7 +20,9 @@ import { UserListComponent } from './user-list/user-list.component';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    UserListModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,1 +1,24 @@
-<p>user-list works!</p>
+<!--Table-->
+<table class="table table-striped w-auto">
+  <!--Table head-->
+  <thead>
+    <th>#</th>
+    <th>Login</th>
+    <th>Data de Criacao</th>
+  </thead>
+  <!--Table head-->
+
+  <!--Table body-->
+  <tbody>
+    <tr *ngFor="let item of listUsers; let i = index">
+      <th>{{ item.id }}</th>
+      <td>{{ item.login }}</td>
+      <td>{{ item.create_time | date: 'dd/mm/yyyy hh:mm' }}</td>
+      <td><button (click)="openModal()">Editar</button></td>
+      <!-- <td><button mat-button (click)="openDialog()">Editar</button></td> -->
+      <td><button> excluir</button></td>
+    </tr>
+  </tbody>
+  <!--Table body-->
+</table>
+<!--Table-->
