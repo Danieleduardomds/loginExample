@@ -62,26 +62,40 @@
   <button mat-button mat-dialog-close>Cancel</button>
   <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
 </mat-dialog-actions> -->
-<div class="modal-header">
-  <h4 class="modal-title pull-left">
-    {{ title }}
-  </h4>
-  <button
-    type="button"
-    class="close pull-right"
-    aria-label="Close"
-    (click)="modalRef.hide()"
-  >
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-    <br>
-    <mat-form-field>
+
+  <div class="modal-header">
+    <h4 id="dialog-static-name" class="modal-title pull-left">
+      {{ title }}
+    </h4>
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="example-container">
+      <mat-form-field hintLabel="Max 10 characters">
         <mat-label>login</mat-label>
-        <input matInput>
-        <mat-label>password</mat-label>
-        <input matInput>
-    </mat-form-field>
-</div>
-<div class="modal-footer">footer</div>
+        <input
+          matInput
+          #login
+          maxlength="10"
+          placeholder="Ex. exemple@example.com"
+        />
+        <mat-hint align="end">{{ login.value.length }}/10</mat-hint>
+      </mat-form-field>
+      <mat-form-field hintLabel="Max 10 characters">
+        <mat-label>Password</mat-label>
+        <input matInput #password maxlength="10" placeholder="Ex. *******" />
+        <mat-hint align="end">{{ password.value.length }}/10</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+  <!-- <div class="modal-footer">footer</div> -->
+
+
+

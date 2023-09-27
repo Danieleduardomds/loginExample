@@ -38,6 +38,7 @@ export class UserListComponent implements OnInit {
         title: 'DANIEL TESTE',  
         data: this.listUsers 
       },
+      backdrop: 'static'
     });
   }
 

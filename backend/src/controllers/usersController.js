@@ -16,7 +16,15 @@ const validationUser = async (request, response) => {
     }  
 };
 
+const deleteUser = async (request, response) => {
+    const idUser = request.body.id;
+    await usersModel.deleteUser(idUser);
+    return response.status(200).json();
+};
+
+
 module.exports = {
     getAll,
-    validationUser
+    validationUser,
+    deleteUser
 }

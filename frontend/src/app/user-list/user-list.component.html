@@ -11,6 +11,7 @@
   <!--Table body-->
   <tbody>
     <tr *ngFor="let item of listUsers; let i = index">
+      <th>{{ i }}</th>
       <th>{{ item.id }}</th>
       <td>{{ item.login }}</td>
       <td>{{ item.create_time | date: 'dd/mm/yyyy hh:mm' }}</td>
