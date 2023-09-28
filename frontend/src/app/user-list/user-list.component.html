@@ -10,14 +10,20 @@
 
   <!--Table body-->
   <tbody>
-    <tr *ngFor="let item of listUsers; let i = index">     
+    <tr *ngFor="let item of listUsers; let i = index">
       <th>{{ item.id }}</th>
       <td>{{ item.login }}</td>
-      <td>{{ item.create_time | date: 'dd/mm/yyyy hh:mm' }}</td>
-      <td><button (click)="openModal(item.id)">Edit</button></td>    
+      <td>{{ item.create_time | date : "dd/mm/yyyy hh:mm" }}</td>
+      <!-- <td><button (click)="openModal(item.id)">Edit</button></td> -->
+       <td><button (click)="openModal(item.id)">Edit</button></td>
       <td><button (click)="deleteUser(item.id)">Delete</button></td>
     </tr>
   </tbody>
   <!--Table body-->
 </table>
 <!--Table-->
+<!-- <app-edit-user-list
+  [loginOut]="this.loginModal"
+  [passwordOut]="this.passwordModal"
+  [showCancel]="this.showCancelModal"
+></app-edit-user-list> -->

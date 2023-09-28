@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { LoginService } from '../shared/service/login.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,8 +12,11 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 })
 export class UserListComponent implements OnInit {
   public listUsers: any;
-  public email: string | null = 'eric@gmail.com';
-  public password: string | null = '123344';
+  // @ViewChild(EditUserListComponent) modal : any;
+  idUserModal: any;
+  loginModal: any;
+  passwordModal: any;
+  // showCancelModal = true;
 
   constructor(
     public dialog: MatDialog,
@@ -30,16 +33,49 @@ export class UserListComponent implements OnInit {
     this.modalRef = this.modalService.show(EditUserListComponent, {
       initialState: {
         title: 'DANIEL TESTE',
-        userId: userId,
-        login: this.email,
-        password: this.password,
+        userId: userId
       },
       backdrop: 'static',
       class: 'modal-dialog-centered',
     });
+    this.modalRef.content.onSave.subscribe(()=>{
+      this.idUserModal = this.modalRef.content.userId;
+      this.loginModal = this.modalRef.content.loginOut;
+      this.passwordModal = this.modalRef.content.passwordOut;
+      console.log(`valor que vem do modal`, this.idUserModal,this.loginModal,this.passwordModal);
+      this.updateUser();
+    })
+  }
+
+  //  public async openModal() {
+  //      this.loginModal =  '';
+  //      this.passwordModal = '';
+  //      const openModal = await this.modalRef.content.openModal();
+  //      const finishProcess =  openModal.subscribe(res => {
+  //       if(res){
+  //         console.log(`update`);
+          
+  //       }
+  //      });
+  //  }
+
+  updateUser(){
+    this.serviceLogin
+      .updateUser(this.idUserModal, this.loginModal, this.passwordModal)
+      .subscribe({
+        next: () => {
+          this.loadDataTable();
+          // this.onSave.emit();
+          // this.modalRef.hide();
+        },
+        error: (error) => {
+          console.error('Error when fetching data:', error);
+        },
+      });
   }
 
   loadDataTable() {
+     
     this.serviceLogin.LoadDataUsers().subscribe({
       next: (data) => {
         this.listUsers = data;
@@ -59,7 +95,5 @@ export class UserListComponent implements OnInit {
         console.error('Error when fetching data:', error);
       },
     });
-  }
-
-  
+  }  
 }
