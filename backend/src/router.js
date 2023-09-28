@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/users',usersController.getAll);
 router.post('/login',loginMiddleware.validateDataLogin, usersController.validationUser);
-router.delete('/deleteUser',loginMiddleware.validateIdUser, usersController.deleteUser);
+router.delete('/deleteUser/:id',usersController.deleteUser);
+router.put('/updateUser/:id',usersController.updateUser)
 
 module.exports = router;

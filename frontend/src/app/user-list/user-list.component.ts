@@ -12,6 +12,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 })
 export class UserListComponent implements OnInit {
   public listUsers: any;
+  public email: string | null = 'eric@gmail.com';
+  public password: string | null = '123344';
 
   constructor(
     public dialog: MatDialog,
@@ -24,21 +26,16 @@ export class UserListComponent implements OnInit {
     this.loadDataTable();
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(EditUserListComponent);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  openModal() {
+  openModal(userId: any) {
     this.modalRef = this.modalService.show(EditUserListComponent, {
       initialState: {
-        title: 'DANIEL TESTE',  
-        data: this.listUsers 
+        title: 'DANIEL TESTE',
+        userId: userId,
+        login: this.email,
+        password: this.password,
       },
-      backdrop: 'static'
+      backdrop: 'static',
+      class: 'modal-dialog-centered',
     });
   }
 
@@ -46,11 +43,23 @@ export class UserListComponent implements OnInit {
     this.serviceLogin.LoadDataUsers().subscribe({
       next: (data) => {
         this.listUsers = data;
-        console.log(`os usuarios sao:`, this.listUsers);
       },
       error: (error) => {
         console.error('Error when fetching data:', error);
       },
     });
   }
+
+  deleteUser(id: any) { 
+    this.serviceLogin.deleteUser(id).subscribe({
+      next: () => {   
+        this.loadDataTable();   
+      },
+      error: (error) => {
+        console.error('Error when fetching data:', error);
+      },
+    });
+  }
+
+  
 }

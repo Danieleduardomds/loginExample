@@ -9,15 +9,26 @@ export class LoginService {
   url = 'http://localhost:3333';
   constructor(private http: HttpClient) {}
   
-  validateLogin(login: string | null, password: string | null): Observable<any> {
-    // Defina o corpo da solicitação como um objeto JSON
+  validateLogin(login: string | null, password: string | null): Observable<any> {  
     const body = { login: login, password: password}; 
-    // const headers = {  'Content-Type': 'application/json' }; 
     return this.http.post<any>(this.url + '/login', body);
   }
 
   LoadDataUsers(): Observable<any> {  
-    // const headers = {  'Content-Type': 'application/json' }; 
-    return this.http.get<any>(this.url + '/users');
+     return this.http.get<any>(this.url + '/users');
+  }
+
+  deleteUser(id: any): Observable<any> {
+    return this.http.delete<any>(this.url + '/deleteUser/'+`${id}`).pipe(
+      res => res,
+      error => error      
+    );
+  }
+
+  updateUser(id:any,login: string | null, password: string | null): Observable<any> {  
+    const body = { login: login, password: password}; 
+    console.log(this.url + '/updateUser/'+`${id}`);
+    console.log(body);
+    return this.http.put<any>(this.url + '/updateUser/'+`${id}`, body);
   }
 }
