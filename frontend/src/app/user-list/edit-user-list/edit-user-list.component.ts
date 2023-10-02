@@ -6,8 +6,14 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { LoginService } from 'src/app/shared/service/login.service';
+import { RX_EMAIL } from 'src/app/shared/utils/regex';
 
 @Component({
   selector: 'app-edit-user-list',
@@ -16,52 +22,67 @@ import { LoginService } from 'src/app/shared/service/login.service';
 })
 export class EditUserListComponent implements OnInit {
   public title: any;
-  public userId: any;
-  public login: string | null = 'daiane@gmail.com';
-  public password: string | null = '123344';
+  public invalidEmail = false;
+  public invalidPassword = false;  
+  public email: string | null = '';
+  public password: string | null = '';
+  public formEditUser = new FormGroup({
+    email: new FormControl(''),
+    password: new FormControl(''),
+  });
+  
   @Output() onSave = new EventEmitter<any>();
-  @Input() public loginOut: any;
-  @Input() public passwordOut: any;
-  @Input() public showCancel: any;
 
-  constructor(
-    public modalRef: BsModalRef,
-    private serviceLogin: LoginService
-  ) {}
+  constructor(private formBuilder: FormBuilder, public modalRef: BsModalRef) {}
 
   ngOnInit() {
-    console.log('dentro do modal', this.userId, this.login, this.password);
-    this.loginOut = this.login;
-    this.passwordOut = this.password;
+    this.createForm();
   }
 
-  // ngOnDestroy() {
-  //   this.onSave.emit(false);
-  // }
+  public createForm(): void {
+    this.formEditUser = this.formBuilder.group({
+      email: [this.email, [Validators.required, Validators.pattern(RX_EMAIL)]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(40),
+        ],
+      ],
+    });
+  }
 
-  // public async openModal() {
-  //   this.modalRef.content.show();
-  //   return this.onSave;
-  // }
+  public onSubmit() {
+    this.email = this.formEditUser.controls.email.value;
+    this.password = this.formEditUser.controls.password.value; 
+    if (!this.email || !this.password) {
+      alert('Enter email and password');
+    } else {   
+       this.checkForm();
+    }
+  }
 
-  // public finishProcess(option:any) {
-  //   this.modalRef.content.hide();
-  //   this.onSave.emit(option)
-  // }
+  private checkForm(): void {
+    const { email, password } = this.formEditUser.controls;
+    if (email.invalid) {
+      this.invalidEmail = true;
+    } else {
+      this.invalidEmail = false;
+    }
+    if (password.invalid) {
+      this.invalidPassword = true;
+    } else {
+      this.invalidPassword = false;
+    }
+
+    if (!this.invalidEmail && !this.invalidPassword) {
+      this.updateUser();
+    }
+  }
 
   updateUser() {
     this.onSave.emit();
     this.modalRef.hide();
-    // this.serviceLogin
-    //   .updateUser(this.userId, this.login, this.password)
-    //   .subscribe({
-    //     next: () => {
-    //       this.onSave.emit();
-    //       this.modalRef.hide();
-    //     },
-    //     error: (error) => {
-    //       console.error('Error when fetching data:', error);
-    //     },
-    //   });
   }
 }

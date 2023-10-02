@@ -1,17 +1,5 @@
+import { Component, Input, OnInit } from '@angular/core';
 import {
-  AfterContentChecked,
-  AfterContentInit,
-  AfterViewChecked,
-  AfterViewInit,
-  Component,
-  DoCheck,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -25,7 +13,6 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { RX_EMAIL, RX_PASSWORD } from '../shared/utils/regex';
 import { LoginService } from '../shared/service/login.service';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
@@ -88,6 +75,7 @@ export class LoginComponent implements OnInit {
       ],
     });
   }
+
   private checkForm(): void {
     const { email, password } = this.formConfirmLogin.controls;
     if (email.invalid) {
@@ -127,7 +115,7 @@ export class LoginComponent implements OnInit {
     if (this.code === 'b324') {
       this.invalidEmail = true;
       this.invalidPassword = true;
-    } else {      
+    } else {
       this.router.navigateByUrl('/userList');
     }
   }

@@ -1,12 +1,14 @@
 import { HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ListUsers } from '../models/list-users.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  url = 'http://localhost:3333';
+  url = environment.URL;
   constructor(private http: HttpClient) {}
   
   validateLogin(login: string | null, password: string | null): Observable<any> {  
@@ -14,7 +16,7 @@ export class LoginService {
     return this.http.post<any>(this.url + '/login', body);
   }
 
-  LoadDataUsers(): Observable<any> {  
+  LoadDataUsers(): Observable<ListUsers[]> {  
      return this.http.get<any>(this.url + '/users');
   }
 

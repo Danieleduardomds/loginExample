@@ -1,24 +1,24 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component,OnInit, ViewChild } from '@angular/core';
 import { LoginService } from '../shared/service/login.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { EditUserListComponent } from './edit-user-list/edit-user-list.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ListUsers } from '../shared/models/list-users.model';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
 })
-export class UserListComponent implements OnInit {
-  public listUsers: any;
-  // @ViewChild(EditUserListComponent) modal : any;
-  idUserModal: any;
+export class UserListComponent implements OnInit { 
+  listUsers: ListUsers[] = []; 
+  idUser: any;
   loginModal: any;
   passwordModal: any;
-  // showCancelModal = true;
 
-  constructor(
+
+  constructor(      
     public dialog: MatDialog,
     public modalRef: BsModalRef,
     private modalService: BsModalService,
@@ -29,44 +29,29 @@ export class UserListComponent implements OnInit {
     this.loadDataTable();
   }
 
-  openModal(userId: any) {
+  openModal(listUser: ListUsers) {
+    this.idUser = listUser.id;
     this.modalRef = this.modalService.show(EditUserListComponent, {
       initialState: {
-        title: 'DANIEL TESTE',
-        userId: userId
+        title: 'Edit User',
+        email: listUser.login,
       },
       backdrop: 'static',
       class: 'modal-dialog-centered',
     });
-    this.modalRef.content.onSave.subscribe(()=>{
-      this.idUserModal = this.modalRef.content.userId;
-      this.loginModal = this.modalRef.content.loginOut;
-      this.passwordModal = this.modalRef.content.passwordOut;
-      console.log(`valor que vem do modal`, this.idUserModal,this.loginModal,this.passwordModal);
+    this.modalRef.content.onSave.subscribe(() => {
+      this.loginModal = this.modalRef.content.email;
+      this.passwordModal = this.modalRef.content.password;
       this.updateUser();
-    })
+    });
   }
 
-  //  public async openModal() {
-  //      this.loginModal =  '';
-  //      this.passwordModal = '';
-  //      const openModal = await this.modalRef.content.openModal();
-  //      const finishProcess =  openModal.subscribe(res => {
-  //       if(res){
-  //         console.log(`update`);
-          
-  //       }
-  //      });
-  //  }
-
-  updateUser(){
+  updateUser() {
     this.serviceLogin
-      .updateUser(this.idUserModal, this.loginModal, this.passwordModal)
+      .updateUser(this.idUser, this.loginModal, this.passwordModal)
       .subscribe({
         next: () => {
           this.loadDataTable();
-          // this.onSave.emit();
-          // this.modalRef.hide();
         },
         error: (error) => {
           console.error('Error when fetching data:', error);
@@ -75,7 +60,6 @@ export class UserListComponent implements OnInit {
   }
 
   loadDataTable() {
-     
     this.serviceLogin.LoadDataUsers().subscribe({
       next: (data) => {
         this.listUsers = data;
@@ -86,14 +70,14 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  deleteUser(id: any) { 
+  deleteUser(id: any) {
     this.serviceLogin.deleteUser(id).subscribe({
-      next: () => {   
-        this.loadDataTable();   
+      next: () => {
+        this.loadDataTable();
       },
       error: (error) => {
         console.error('Error when fetching data:', error);
       },
     });
-  }  
+  }
 }

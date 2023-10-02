@@ -23,7 +23,7 @@ const deleteUser = async (id) => {
 
 const updateUser = async (id,user) => {
     const {login,password} = user;      
-    const query = 'UPDATE users SET login = ?,password = ? WHERE id = ?';
+    const query = 'UPDATE users SET login = ?, create_time =  NOW(), password = ? WHERE id = ?';
     const [updateUser] = await connection.execute(query, [login,password,id]);
     return updateUser;
 };
