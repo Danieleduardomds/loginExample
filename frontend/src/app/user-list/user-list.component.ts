@@ -13,6 +13,7 @@ import { ListUsers } from '../shared/models/list-users.model';
 })
 export class UserListComponent implements OnInit { 
   listUsers: ListUsers[] = []; 
+  // daniel: Array<ListUsers> = []; 
   idUser: any;
   loginModal: any;
   passwordModal: any;

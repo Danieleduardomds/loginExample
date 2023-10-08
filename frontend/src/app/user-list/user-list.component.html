@@ -1,23 +1,59 @@
-<!--Table-->
-<table class="table table-striped w-auto">
+<!-- Table-->
+<table class="table align-middle mb-0 bg-white">
   <!--Table head-->
-  <thead>
-    <th>#</th>
-    <th>Login</th>
-    <th>Data de Criacao</th>
+  <thead class="bg-light">
+    <tr>
+      <th>Name</th>
+      <th>Title</th>
+      <th>Create Date</th>
+      <th>Position</th>
+      <th>Actions</th>
+    </tr>
   </thead>
   <!--Table head-->
-
   <!--Table body-->
   <tbody>
     <tr *ngFor="let item of listUsers; let i = index">
-      <th>{{ item.id }}</th>
-      <td>{{ item.login }}</td>
-      <td>{{ item.create_time | date : "dd/mm/yyyy hh:mm" }}</td>
-      <td><button (click)="openModal(listUsers[i])">Edit</button></td>      
-      <td><button (click)="deleteUser(item.id)">Delete</button></td>
+      <td>
+        <div class="d-flex align-items-center">
+          <img
+            src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+            alt=""
+            style="width: 45px; height: 45px"
+            class="rounded-circle"
+          />
+          <div class="ms-3">
+            <p class="fw-bold mb-1">{{ item.nome }}</p>
+            <p class="text-muted mb-0">{{ item.login }}</p>
+          </div>
+        </div>
+      </td>
+      <td>
+        <p class="fw-normal mb-1">{{ item.cargo }}</p>
+        <p class="text-muted mb-0">{{ item.setor }}</p>
+      </td>
+      <td>
+        {{ item.create_time | date : "dd/mm/yyyy hh:mm" }}
+      </td>
+      <td>{{ item.posicao }}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-dark"
+          (click)="openModal(listUsers[i])"
+        >
+          Edit
+        </button>
+        <button
+          type="button"
+          class="button-delete btn btn-dark"
+          (click)="deleteUser(item.id)"
+        >
+          Delete
+        </button>
+      </td>
     </tr>
   </tbody>
   <!--Table body-->
 </table>
-<!--Table-->
+<!-- Table-->
