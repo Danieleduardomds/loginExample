@@ -7,4 +7,5 @@ export interface ListUsers{
     setor: string;
     cargo: string;
     posicao: string;
+    imagem: string;
 }
