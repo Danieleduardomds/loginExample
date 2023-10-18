@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   public submitted = false;
   public invalidEmail = false;
   public invalidPassword = false;
-  public code: any;
+  public token: any;
   public email: string | null = '';
   public password: string | null = '';
 
@@ -47,13 +47,15 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    localStorage.clear();
     this.createForm();
   }
 
   validateLogin() {
     this.serviceLogin.validateLogin(this.email, this.password).subscribe({
       next: (data) => {
-        this.code = data.code;
+        this.token = data.token;
+        localStorage.setItem('token', data.token);        
         this.checkForm();
       },
       error: (error) => {
@@ -112,7 +114,7 @@ export class LoginComponent implements OnInit {
   }
 
   public login() {
-    if (this.code === 'b324') {
+    if (!this.token) {
       this.invalidEmail = true;
       this.invalidPassword = true;
     } else {

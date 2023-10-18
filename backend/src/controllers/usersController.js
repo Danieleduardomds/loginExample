@@ -1,4 +1,5 @@
 const usersModel = require('../models/usersModel');
+const jwt = require('jsonwebtoken');
 
 const getAll = async (request, response) => {
     const users = await usersModel.getAll();
@@ -10,7 +11,10 @@ const validationUser = async (request, response) => {
     const password = request.body.password;
     const [user] = await usersModel.validationUser(login,password); 
     if(user){
-        return response.status(200).json({code:'a543'});
+        const userRes = { email: user.login, password: user.password }
+        const accessToken = jwt.sign(userRes, process.env.ACCESS_TOKEN, { expiresIn: '8h' })
+        return response.status(200).json({ token: accessToken });
+        //return response.status(200).json({code:'a543'});       
     }else{
         return response.status(200).json({code:'b324'});
     }  
