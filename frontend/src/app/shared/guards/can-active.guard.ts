@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import jwt_decode from "jwt-decode";
 import { AuthService } from '../service/auth.service';
+import Cookies from 'js-cookie';
 
 
 @Injectable({
@@ -13,8 +14,8 @@ export class canActiveUserList {
     public router: Router
     ) { }
 
-    canActivate(): boolean{
-      const token: any = localStorage.getItem('token');
+    canActivate(): boolean{  
+      const token = Cookies.get('token');
       let tokenPayload: any;
             
       try {

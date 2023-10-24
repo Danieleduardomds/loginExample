@@ -10,7 +10,7 @@ const authenticateToken = (req, res, next) => {
         jwt.verify(token, process.env.ACCESS_TOKEN, (err, response) => {
             if (err) {
                 //res.locals = response;                
-                return res.sendStatus(403);
+                return res.sendStatus(403);              
             }else {
                 next();
             }

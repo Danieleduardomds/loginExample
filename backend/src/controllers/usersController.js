@@ -1,15 +1,15 @@
-const usersModel = require('../models/usersModel');
+const userService = require('../service/userService');
 const jwt = require('jsonwebtoken');
 
 const getAll = async (request, response) => {
-    const users = await usersModel.getAll();
+    const users = await userService.getAll();
     return response.status(200).json(users);
 };
 
 const validationUser = async (request, response) => {
     const login = request.body.login;
     const password = request.body.password;
-    const [user] = await usersModel.validationUser(login,password); 
+    const [user] = await userService.validationUser(login,password); 
     if(user){
         const userRes = { email: user.login, password: user.password }
         const accessToken = jwt.sign(userRes, process.env.ACCESS_TOKEN, { expiresIn: '8h' })
@@ -22,13 +22,13 @@ const validationUser = async (request, response) => {
 
 const deleteUser = async (request, response) => {
     const {id} = request.params;
-    await usersModel.deleteUser(id);
+    await userService.deleteUser(id);
     return response.status(204).json();
 };
 
 const updateUser= async (request,response) =>{
     const {id} = request.params;
-    await usersModel.updateUser(id,request.body)
+    await userService.updateUser(id,request.body)
     return response.status(204).json();
 }
 

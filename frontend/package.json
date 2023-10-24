@@ -25,6 +25,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@material/form-field": "^15.0.0-canary.bc9ae6c9c.0",
     "bootstrap": "^5.3.1",
+    "js-cookie": "^3.0.5",
     "jwt-decode": "^3.1.2",
     "ngx-bootstrap": "11.0.2",
     "rxjs": "~7.8.0",

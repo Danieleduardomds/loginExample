@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import Cookies from 'js-cookie';
 import {
   FormBuilder,
   FormControl,
@@ -48,14 +49,17 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     localStorage.clear();
+    Cookies.remove('token'); 
     this.createForm();
   }
 
-  validateLogin() {
+  validateLogin() {   
     this.serviceLogin.validateLogin(this.email, this.password).subscribe({
       next: (data) => {
-        this.token = data.token;
-        localStorage.setItem('token', data.token);        
+        this.token = data.token; 
+        // O cookie para expirar em 30 min    
+        const setCookieOptions = { expires: 0.02 };
+        Cookies.set('token', data.token,setCookieOptions);
         this.checkForm();
       },
       error: (error) => {

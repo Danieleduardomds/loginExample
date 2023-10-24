@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import Cookies from 'js-cookie';
 import {
   HttpRequest,
   HttpHandler,
@@ -17,8 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    const token = localStorage.getItem('token');
-
+    const token = Cookies.get('token');    
     if (token) {
       request = request.clone({
         setHeaders: { Authorization: `Bearer ${token}` }
