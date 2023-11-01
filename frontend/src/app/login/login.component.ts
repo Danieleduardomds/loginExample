@@ -15,6 +15,7 @@ import {
 import { RX_EMAIL, RX_PASSWORD } from '../shared/utils/regex';
 import { LoginService } from '../shared/service/login.service';
 import { Router } from '@angular/router';
+import { SHA1 } from 'crypto-js';
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,8 @@ export class LoginComponent implements OnInit {
   public token: any;
   public email: string | null = '';
   public password: string | null = '';
+  public emailHash: string | null = '';
+  public passwordHash: string | null = '';
 
   public formConfirmLogin = new FormGroup({
     email: new FormControl(''),
@@ -49,23 +52,30 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     localStorage.clear();
-    Cookies.remove('token'); 
+    Cookies.remove('token');
     this.createForm();
   }
 
-  validateLogin() {   
-    this.serviceLogin.validateLogin(this.email, this.password).subscribe({
-      next: (data) => {
-        this.token = data.token; 
-        // O cookie para expirar em 30 min    
-        const setCookieOptions = { expires: 0.02 };
-        Cookies.set('token', data.token,setCookieOptions);
-        this.checkForm();
-      },
-      error: (error) => {
-        console.error('Error when fetching data:', error);
-      },
-    });
+  validateLogin() {
+    this.emailHash = SHA1(this.email).toString();
+    this.passwordHash = SHA1(this.password).toString();
+    console.log('email', this.emailHash);
+    console.log('senha', this.passwordHash);
+
+    this.serviceLogin
+      .validateLogin(this.emailHash, this.passwordHash)
+      .subscribe({
+        next: (data) => {
+          this.token = data.token;
+          // O cookie para expirar em 30 min
+          const setCookieOptions = { expires: 0.02 };
+          Cookies.set('token', data.token, setCookieOptions);
+          this.checkForm();
+        },
+        error: (error) => {
+          console.error('Error when fetching data:', error);
+        },
+      });
   }
 
   public createForm(): void {

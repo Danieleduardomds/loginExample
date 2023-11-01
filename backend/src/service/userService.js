@@ -1,4 +1,6 @@
 const connection = require('../infra/connection');
+const database = require('../infra/connectionSequelize');
+const User = require('../models/usersModel');
 
 const getAll = async () => {
     try {     
@@ -8,6 +10,17 @@ const getAll = async () => {
         throw error
     }
 };
+
+
+// const getAll = async () => {
+//     //await database.sync();
+//     try {
+//        const user = await User.findAll();
+//        return user;
+//     } catch (error) {
+//         throw error
+//     }
+// };
 
 const validationUser = async (login, password) => {
     const validationLogin = login;

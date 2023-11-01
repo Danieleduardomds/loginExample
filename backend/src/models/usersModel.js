@@ -1,18 +1,27 @@
+const Sequelize = require('sequelize');
+const connection = require('../infra/connectionSequelize');
 
-
-class User {
-    constructor(id, login, create_time, password, nome, setor, cargo, posicao, imagem) {
-            this.id = Number;
-            this.login = String;
-            this.create_time = String;
-            this.password = String;
-            this.nome = String;
-            this.setor = String;
-            this.cargo = String;
-            this.posicao = String;
-            this.imagem = String;
-    }
-
-}
+const User = connection.define('users', {
+    id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true
+    },
+    login: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    create_time: Sequelize.DATE,
+    password: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    nome: Sequelize.STRING,
+    setor: Sequelize.STRING,
+    cargo: Sequelize.STRING,
+    posicao: Sequelize.STRING,
+    imagem: Sequelize.STRING,
+})
 
 module.exports = User;
